@@ -1,0 +1,20 @@
+#specify language travis needs to expect
+language: python
+python:
+  - "3.6"
+
+#tell travis what services it should expect
+services:
+  #just the docker service, since all sub services are in docker and docker compose
+  - docker
+
+#specify the 'before' script which runs before any automation commands (next section)
+before_script: >
+  pip install docker-compose
+
+#actual script to run each time
+#if this fails, build will be failed with a notification
+script:
+  #we have to run docker-compose command for running our tests
+  # test = code test; flake8 is our linting tool
+  - docker-compose run app sh -c "python manage.py test && flake8"
