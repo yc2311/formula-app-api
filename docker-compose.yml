@@ -1,0 +1,32 @@
+#to run -> 'docker-compose build' in project root
+
+#version of docker-compose
+version: "3"
+
+#services of app that need to be connfigured: eg. app, db
+services:
+  #name of service
+  app:
+    #now we get into sections of service that need to be configured
+
+    #build service config
+    build:
+      #context is location where we are running docker-compose from (in our case, curr dir)
+      context: .
+
+    #ports service config
+    ports:
+      #map local port 8000 to img's 8000
+      - "8000:8000"
+
+    #volumes allow us to send updates from proj to img in real time
+    #so, file changes, etc in proj go auto in img, and we don't need to restart the container
+    volumes:
+      # this will map app code in project root to docker container
+      - ./app:/app
+
+    #command is the command to run the app in the container
+    #the > char is used to break the command in the next line; only one indent before sh is important and required
+    # sh is to specify its a shell command; -c means run command; "python..." is the command ran in shell
+    command: >
+      sh -c "python manage.py runserver 0.0.0.0:8000"
