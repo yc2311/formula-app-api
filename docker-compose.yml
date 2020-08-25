@@ -30,3 +30,21 @@ services:
     # sh is to specify its a shell command; -c means run command; "python..." is the command ran in shell
     command: >
       sh -c "python manage.py runserver 0.0.0.0:8000"
+
+    # db to work with app
+    environment:
+      - DB_HOST=db
+      - DB_NAME=app
+      - DB_USER=postgres
+      - DB_PASS=secret
+
+    depends_on:
+      - db
+
+  #db service
+  db:
+    image: postgres:10-alpine
+    environment:
+      - POSTGRES_DB=app
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=secret
